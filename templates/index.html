@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To Do List</title>
+  <!-- Link to external CSS (critical for separation!) -->
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <h1>My Tasks</h1>
+
+  <!-- Add Task Input (replace prompt-based UX) -->
+  <div class="task-input-container">
+    <input type="text" id="new-task" placeholder="Enter a new task...">
+    <button id="add">Add Task</button>
+  </div>
+
+  <!-- Task List -->
+  <ol id="list">
+    {% for task in list %}
+      <li>
+        {{ task }}
+        <button class="delete-btn" data-task="{{ task }}">Delete</button>
+      </li>
+    {% endfor %}
+  </ol>
+
+  <!-- Link to external JavaScript (at bottom for better performance) -->
+  <script src="/static/js/script.js"></script>
+</body>
+</html>

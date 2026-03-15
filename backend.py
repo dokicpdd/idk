@@ -1,30 +1,52 @@
-from flask import Flask, render_template, request, jsonify
+from fastapi import FastAPI, Request, Form, Depends
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 
-app = Flask(__name__)
-# In-memory storage (replace with a database like SQLite for real persistence)
-tasks = []
+# Initialize FastAPI app
+app = FastAPI()
 
-@app.route('/')
-def task_page():
-    return render_template('index.html', tasks=tasks)
+# Mount static files (CSS) - same as Flask's static folder
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# API to add a task
-@app.route('/api/add', methods=['POST'])
-def add_task():
-    task = request.json.get('task')
-    if task and task.strip():
-        tasks.append(task.strip())
-        return jsonify({"success": True, "tasks": tasks})
-    return jsonify({"success": False, "error": "Empty task!"})
+# Initialize Jinja2 templates (same as Flask's templates folder)
+templates = Jinja2Templates(directory="templates")
 
-# API to delete a task
-@app.route('/api/delete', methods=['POST'])
-def delete_task():
-    task = request.json.get('task')
-    if task in tasks:
-        tasks.remove(task)
-        return jsonify({"success": True, "tasks": tasks})
-    return jsonify({"success": False, "error": "Task not found!"})
+# In-memory task list (same as your original Flask code)
+tasks = ["Buy groceries", "Finish homework"]  # Sample initial tasks
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=443)  # Use port 5000 (443 needs SSL)
+
+# Root endpoint: redirect to /task (same as Flask)
+@app.get("/", response_class=RedirectResponse)
+async def root():
+    return RedirectResponse(url="/task")
+
+# Task page: render HTML with tasks (same as Flask's /task)
+@app.get("/task", response_class=HTMLResponse)
+async def get_tasks(request: Request):
+    # Pass tasks to the template (same as Flask's render_template)
+    return templates.TemplateResponse(
+        "index.html", 
+        {"request": request, "list": tasks}  # "list" matches your HTML template variable
+    )
+
+# Optional: API endpoint to get tasks (JSON) - FastAPI bonus (not in Flask)
+@app.get("/api/tasks")
+async def get_tasks_api():
+    return {"tasks": tasks}
+
+# Optional: API endpoint to add a task (JSON) - FastAPI bonus
+@app.post("/api/add-task")
+async def add_task_api(task: str):
+    if task and task not in tasks:
+        tasks.append(task)
+        return {"success": True, "tasks": tasks}
+    return {"success": False, "message": "Task is empty or already exists"}
+
+# Optional: API endpoint to delete a task (JSON) - FastAPI bonus
+@app.delete("/api/delete-task/{task_id}")
+async def delete_task_api(task_id: int):
+    if 0 <= task_id < len(tasks):
+        deleted_task = tasks.pop(task_id)
+        return {"success": True, "deleted_task": deleted_task, "tasks": tasks}
+    return {"success": False, "message": "Invalid task ID"}

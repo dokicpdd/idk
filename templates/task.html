@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Management</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Task Management</h1>
+        <a href="/" class="back-btn">← Back to Dashboard</a>
+
+        <div class="add-task">
+            <input type="text" id="content" placeholder="Enter task">
+            <button onclick="addTask()">Add</button>
+        </div>
+
+        <div id="task-list" class="task-list"></div>
+    </div>
+
+    <script>
+        // 加载任务
+        async function loadTasks() {
+            const res = await fetch("/api/tasks");
+            const data = await res.json();
+            const list = document.getElementById("task-list");
+            list.innerHTML = "";
+
+            data.tasks.forEach(task => {
+                const div = document.createElement("div");
+                div.className = "task-item";
+                div.innerHTML = `
+                    <span>${task.content}</span>
+                    <button onclick="deleteTask(${task.id})">Delete</button>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        // 添加任务
+        async function addTask() {
+            const content = document.getElementById("content").value;
+            if (!content) return;
+
+            await fetch(`/api/tasks?content=${encodeURIComponent(content)}`, {
+                method: "POST"
+            });
+
+            document.getElementById("content").value = "";
+            loadTasks();
+        }
+
+        // 删除任务
+        async function deleteTask(id) {
+            await fetch(`/api/tasks/${id}`, { method: "DELETE" });
+            loadTasks();
+        }
+
+        // 页面加载时获取任务
+        window.onload = loadTasks;
+    </script>
+</body>
+</html>

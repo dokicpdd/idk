@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Dashboard</h1>
-        <div class="menu">
-            <a href="/task" class="btn">Task Management</a>
-            <!-- 以后加 AI、Settings 这里加按钮 -->
+        <div class="card">
+            <h1 style="margin-top:0;">Dashboard</h1>
+            <p class="subtitle">Manage your tasks with search, editing, and completion tracking.</p>
+            <div class="actions" style="margin-top:14px;">
+                <a href="/task" class="btn btn-primary" style="text-decoration:none; display:inline-flex; align-items:center;">Task Management</a>
+            </div>
+            <!-- You can add AI/Settings buttons here later -->
         </div>
     </div>
 </body>

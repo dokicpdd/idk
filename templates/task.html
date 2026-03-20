@@ -1,63 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Task Management</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="/static/css/style.css" />
+  </head>
+  <body>
     <div class="container">
-        <h1>Task Management</h1>
-        <a href="/" class="back-btn">← Back to Dashboard</a>
+      <header class="header">
+        <div>
+          <h1>Task Management</h1>
+          <p class="subtitle">Add, edit, complete, filter, and delete tasks.</p>
+        </div>
+        <a href="/index" class="back-btn">← Back to Dashboard</a>
+      </header>
 
-        <div class="add-task">
-            <input type="text" id="content" placeholder="Enter task">
-            <button onclick="addTask()">Add</button>
+      <section class="card">
+        <h2 class="section-title">Create task</h2>
+        <form id="create-form" class="form">
+          <label class="label" for="content">Task</label>
+          <input type="text" id="content" name="content" class="input" placeholder="e.g. Finish homework" required maxlength="200" />
+
+          <div class="grid-2">
+            <div class="field">
+              <label class="label" for="tags">Tags (optional)</label>
+              <input type="text" id="tags" name="tags" class="input" placeholder="e.g. school, urgent" maxlength="2000" />
+            </div>
+
+            <div class="field">
+              <label class="label" for="priority">Priority (0-10, optional)</label>
+              <input type="number" id="priority" name="priority" class="input" placeholder="e.g. 5" min="0" max="10" />
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label class="label" for="due_date">Due date (optional)</label>
+              <input type="date" id="due_date" name="due_date" class="input" />
+            </div>
+
+            <div class="field checkbox-field">
+              <label class="checkbox-label">
+                <input type="checkbox" id="completed" name="completed" />
+                Mark as completed
+              </label>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-primary" type="submit">Add task</button>
+            <button class="btn" type="button" id="refresh">Refresh</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="toolbar">
+          <h2 class="section-title">Tasks</h2>
+          <div class="status" id="status" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="filters">
+          <input id="q" class="input" placeholder="Search content/tags…" maxlength="2000" />
+
+          <select id="completed-filter" class="input">
+            <option value="">All</option>
+            <option value="false">Not completed</option>
+            <option value="true">Completed</option>
+          </select>
+
+          <input id="priority-filter" class="input" placeholder="Priority (exact)..." type="number" min="0" max="10" />
+
+          <select id="sort" class="input">
+            <option value="created_at">Sort: created</option>
+            <option value="updated_at">Sort: updated</option>
+            <option value="due_date">Sort: due date</option>
+            <option value="priority">Sort: priority</option>
+          </select>
+
+          <select id="order" class="input">
+            <option value="desc">Order: desc</option>
+            <option value="asc">Order: asc</option>
+          </select>
+
+          <button class="btn" type="button" id="apply-filters">Apply</button>
         </div>
 
         <div id="task-list" class="task-list"></div>
+      </section>
     </div>
 
-    <script>
-        // 加载任务
-        async function loadTasks() {
-            const res = await fetch("/api/tasks");
-            const data = await res.json();
-            const list = document.getElementById("task-list");
-            list.innerHTML = "";
+    <template id="task-template">
+      <div class="task-item" data-id="">
+        <label class="task-check">
+          <input class="checkbox" type="checkbox" />
+          <span class="task-content"></span>
+        </label>
 
-            data.tasks.forEach(task => {
-                const div = document.createElement("div");
-                div.className = "task-item";
-                div.innerHTML = `
-                    <span>${task.content}</span>
-                    <button onclick="deleteTask(${task.id})">Delete</button>
-                `;
-                list.appendChild(div);
-            });
-        }
+        <div class="task-meta">
+          <div class="task-sub">
+            <span class="task-tags"></span>
+            <span class="task-priority"></span>
+            <span class="task-due"></span>
+          </div>
+        </div>
 
-        // 添加任务
-        async function addTask() {
-            const content = document.getElementById("content").value;
-            if (!content) return;
+        <div class="task-actions">
+          <button class="btn btn-small edit-btn" type="button">Edit</button>
+          <button class="btn btn-small save-btn" type="button" style="display:none;">Save</button>
+          <button class="btn btn-small cancel-btn" type="button" style="display:none;">Cancel</button>
+          <button class="btn btn-small btn-danger delete-btn" type="button">Delete</button>
+        </div>
 
-            await fetch(`/api/tasks?content=${encodeURIComponent(content)}`, {
-                method: "POST"
-            });
+        <div class="task-editor" style="display:none;">
+          <div class="editor-grid">
+            <input class="editor-content input" type="text" maxlength="200" />
+            <input class="editor-tags input" type="text" maxlength="2000" />
+            <input class="editor-priority input" type="number" min="0" max="10" />
+            <input class="editor-due input" type="date" />
+            <label class="checkbox-label">
+              <input class="editor-completed" type="checkbox" />
+              Completed
+            </label>
+          </div>
+        </div>
+      </div>
+    </template>
 
-            document.getElementById("content").value = "";
-            loadTasks();
-        }
-
-        // 删除任务
-        async function deleteTask(id) {
-            await fetch(`/api/tasks/${id}`, { method: "DELETE" });
-            loadTasks();
-        }
-
-        // 页面加载时获取任务
-        window.onload = loadTasks;
-    </script>
-</body>
+    <div id="toast" class="toast" style="display:none;"></div>
+    <script src="/static/js/script.js" defer></script>
+  </body>
 </html>

@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+sqlalchemy>=1.4,<3.0
+pydantic
+argon2-cffi
+passlib[argon2]
+python-jose[cryptography]
+apscheduler
+pytest
+pytest-asyncio
+itsdangerous
+aiosqlite
+greenlet
+httpx
+jinja2
+python-multipart

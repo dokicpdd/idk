@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "todo-list"
+version = "0.1.0"
+description = "A FastAPI-based To-Do List application"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "sqlalchemy>=1.4,<3.0",
+    "pydantic",
+    "passlib[argon2]",
+    "python-jose[cryptography]",
+    "apscheduler",
+    "itsdangerous",
+    "aiosqlite",
+    "greenlet",
+    "httpx",
+    "jinja2",
+    "python-multipart",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+]
+
+[project.scripts]
+todo-app = "main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["backend*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+pythonpath = ["."]

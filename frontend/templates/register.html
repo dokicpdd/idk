@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Register</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Register</h1>
+    <form id="register-form">
+      <label>Username<br /><input id="username" name="username" required /></label><br />
+      <label>Password<br /><input id="password" type="password" name="password" required /></label><br />
+      <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="/login">Login</a></p>
+    <div id="message" style="color:red;margin-top:8px;"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('register-form');
+    const message = document.getElementById('message');
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      message.textContent = '';
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      try {
+        const res = await fetch('/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || data.error?.message || 'Register failed');
+        // go to login page
+        window.location.href = '/login';
+      } catch (err) {
+        message.textContent = err.message || 'Register failed';
+      }
+    });
+  </script>
+</body>
+</html>

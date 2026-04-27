@@ -1,0 +1,21 @@
+Metadata-Version: 2.4
+Name: todo-list
+Version: 0.1.0
+Summary: A FastAPI-based To-Do List application
+Requires-Python: >=3.11
+Requires-Dist: fastapi
+Requires-Dist: uvicorn[standard]
+Requires-Dist: sqlalchemy<3.0,>=1.4
+Requires-Dist: pydantic
+Requires-Dist: passlib[argon2]
+Requires-Dist: python-jose[cryptography]
+Requires-Dist: apscheduler
+Requires-Dist: itsdangerous
+Requires-Dist: aiosqlite
+Requires-Dist: greenlet
+Requires-Dist: httpx
+Requires-Dist: jinja2
+Requires-Dist: python-multipart
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-asyncio; extra == "dev"

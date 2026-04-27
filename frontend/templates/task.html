@@ -13,7 +13,10 @@
           <h1>Task Management</h1>
           <p class="subtitle">Add, edit, complete, filter, and delete tasks.</p>
         </div>
-        <a href="/index" class="back-btn">← Back to Dashboard</a>
+        <div>
+          <a href="/index" class="back-btn">← Back to Dashboard</a>
+          <button id="logout-btn" class="btn" style="margin-left: 10px;">Logout</button>
+        </div>
       </header>
 
       <section class="card">
@@ -129,6 +132,11 @@
     </template>
 
     <div id="toast" class="toast" style="display:none;"></div>
-    <script src="/static/js/script.js" defer></script>
+    <!-- Load JS modules in order: utils → api → auth → tasks → main -->
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/tasks.js"></script>
+    <script src="/static/js/main.js"></script>
   </body>
 </html>

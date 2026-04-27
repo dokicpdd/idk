@@ -8,7 +8,10 @@
 <body>
     <div class="container">
         <div class="card">
-            <h1 style="margin-top:0;">Dashboard</h1>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h1 style="margin-top:0;">Dashboard</h1>
+                <button id="logout-btn" class="btn">Logout</button>
+            </div>
             <p class="subtitle">Manage your tasks with search, editing, and completion tracking.</p>
             <div class="actions" style="margin-top:14px;">
                 <a href="/task" class="btn btn-primary" style="text-decoration:none; display:inline-flex; align-items:center;">Task Management</a>
@@ -16,5 +19,14 @@
             <!-- You can add AI/Settings buttons here later -->
         </div>
     </div>
+    
+    <!-- Load JS modules -->
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/auth.js"></script>
+    <script>
+        // Initialize logout on dashboard
+        document.addEventListener('DOMContentLoaded', setupLogout);
+    </script>
 </body>
 </html>

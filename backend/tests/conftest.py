@@ -6,7 +6,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
-from backend.backend import app
+from backend.app import app
 from backend.models import Base
 
 # Use in-memory SQLite for testing

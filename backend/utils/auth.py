@@ -12,7 +12,7 @@ from sqlalchemy import select
 
 from backend.core.database import get_session
 from backend.models import User
-from backend.core.security import verify_session_token
+from backend.core.security import verify_access_token
 
 
 async def get_current_user(
@@ -30,7 +30,7 @@ async def get_current_user(
     if not token:
         raise HTTPException(status_code=401, detail="Not authenticated")
     
-    username = verify_session_token(token)
+    username = verify_access_token(token)
     result = await session.execute(select(User).where(User.username == username))
     user = result.scalar_one_or_none()
     
@@ -48,7 +48,7 @@ async def get_current_user_optional(token: Optional[str] = Cookie(None)) -> Opti
     if not token:
         return None
     try:
-        return verify_session_token(token)
+        return verify_access_token(token)
     except HTTPException:
         return None
 

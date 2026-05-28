@@ -49,7 +49,7 @@ async function loadTasks() {
 }
 
 /**
- * Render tasks list to the DOM
+ * Render tasks list to the DOM with staggered animations
  * @param {Array} tasks - Array of task objects
  */
 function renderTasks(tasks) {
@@ -65,10 +65,13 @@ function renderTasks(tasks) {
     return;
   }
 
-  for (const t of tasks) {
+  tasks.forEach((t, index) => {
     const node = tpl.content.cloneNode(true);
     const item = node.querySelector(".task-item");
     item.dataset.id = t.id;
+    
+    // Add staggered animation delay
+    item.style.animation = `fadeInUp 0.4s ease ${index * 0.08}s both`;
 
     const checkbox = node.querySelector(".checkbox");
     const content = node.querySelector(".task-content");
@@ -89,7 +92,7 @@ function renderTasks(tasks) {
     setupTaskActions(node, t, checkbox);
 
     list.appendChild(node);
-  }
+  });
 }
 
 /**

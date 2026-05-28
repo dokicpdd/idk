@@ -6,10 +6,9 @@ Run with: pytest tests/test_api.py -v
 
 import pytest
 from fastapi.testclient import TestClient
-from backend.backend import app
+from backend.app import app
 
 client = TestClient(app)
-
 
 class TestPages:
     """Tests for HTML page routes."""

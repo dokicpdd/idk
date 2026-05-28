@@ -36,7 +36,7 @@ async function api(path, options = {}) {
  */
 const authApi = {
   async logout() {
-    const res = await fetch("/auth/logout", { method: "POST" });
+    const res = await fetch("/api/auth/logout", { method: "POST" });
     if (!res.ok) {
       throw new Error("Logout failed");
     }

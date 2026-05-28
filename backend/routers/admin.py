@@ -17,7 +17,7 @@ from backend.utils.auth import get_current_admin
 from backend.schemas.user import UserRead
 from backend.schemas.task import TaskRead
 
-router = APIRouter(prefix="/admin", tags=["admin"])
+router = APIRouter(prefix="/api/admin", tags=["admin"])
 
 
 @router.get("/stats")

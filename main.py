@@ -5,7 +5,7 @@ To-Do List Application Entry Point
 Run with: python main.py
 """
 
-from backend.backend import app
+from backend.app import app
 import uvicorn
 from backend.core.config import settings
 

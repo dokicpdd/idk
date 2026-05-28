@@ -9,6 +9,7 @@ from backend.schemas.task import TaskCreate, TaskRead
 from backend.core.database import get_session
 from backend.utils.auth import get_current_user
 
+
 router = APIRouter(prefix="/api/tasks", tags=["tasks"])
 
 @router.get("", response_model=List[TaskRead])
@@ -21,6 +22,7 @@ async def list_tasks(
     result = await session.execute(stmt)
     tasks = result.scalars().all()
     return tasks
+
 
 @router.post("", response_model=TaskRead, status_code=status.HTTP_201_CREATED)
 async def create_task(
@@ -52,6 +54,7 @@ async def create_task(
     await session.refresh(db_task)
     return db_task
 
+
 @router.put("/{task_id}", response_model=TaskRead)
 async def update_task(
     task_id: int,
@@ -78,6 +81,7 @@ async def update_task(
     await session.refresh(db_task)
     return db_task
 
+
 @router.patch("/{task_id}", response_model=TaskRead)
 async def patch_task(
     task_id: int,
@@ -101,6 +105,7 @@ async def patch_task(
     await session.commit()
     await session.refresh(db_task)
     return db_task
+
 
 @router.delete("/{task_id}")
 async def delete_task(

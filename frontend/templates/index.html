@@ -4,19 +4,67 @@
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 40px 24px;
+        }
+        .card {
+            margin: 0;
+            padding: 48px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+        .card h1 {
+            font-size: 36px;
+            margin: 0 0 12px;
+            background: linear-gradient(135deg, #eaf0ff 0%, #a8c7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card p.subtitle {
+            font-size: 16px;
+            color: rgba(234, 240, 255, 0.7);
+            margin: 0 0 32px;
+        }
+        .card .actions {
+            justify-content: center;
+            gap: 16px;
+        }
+        .card .actions .btn {
+            padding: 14px 24px;
+            font-size: 16px;
+        }
+        .card #logout-btn {
+            margin-top: 24px;
+            background: rgba(255, 90, 90, 0.15);
+            border-color: rgba(255, 120, 120, 0.4);
+        }
+        .card #logout-btn:hover {
+            background: rgba(255, 90, 90, 0.25);
+            border-color: rgba(255, 120, 120, 0.6);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h1 style="margin-top:0;">Dashboard</h1>
-                <button id="logout-btn" class="btn">Logout</button>
-            </div>
-            <p class="subtitle">Manage your tasks with search, editing, and completion tracking.</p>
-            <div class="actions" style="margin-top:14px;">
+            <h1>Welcome Back!</h1>
+            <p class="subtitle">Manage your tasks efficiently with advanced features</p>
+            <div class="actions">
                 <a href="/task" class="btn btn-primary" style="text-decoration:none; display:inline-flex; align-items:center;">Task Management</a>
+                <a href="/admin" class="btn" style="text-decoration:none; display:inline-flex; align-items:center;">Admin Dashboard</a>
             </div>
-            <!-- You can add AI/Settings buttons here later -->
+            <button id="logout-btn" class="btn">Logout</button>
         </div>
     </div>
     

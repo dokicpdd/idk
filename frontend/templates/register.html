@@ -4,17 +4,86 @@
   <meta charset="utf-8" />
   <title>Register</title>
   <link rel="stylesheet" href="/static/css/style.css" />
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 400px;
+      padding: 40px 24px;
+    }
+    .card {
+      margin: 0;
+      padding: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+    }
+    h1 {
+      margin: 0 0 24px;
+      font-size: 28px;
+      text-align: center;
+      background: linear-gradient(135deg, #eaf0ff 0%, #a8c7ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .label {
+      font-size: 14px;
+      color: rgba(234, 240, 255, 0.85);
+      margin-bottom: 6px;
+      display: block;
+    }
+    button[type="submit"] {
+      margin-top: 8px;
+      padding: 12px;
+      font-size: 16px;
+    }
+    p {
+      text-align: center;
+      margin: 20px 0 0;
+      color: rgba(234, 240, 255, 0.7);
+    }
+    p a {
+      color: #78aaff;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    p a:hover {
+      color: #a8c7ff;
+      text-decoration: underline;
+    }
+    #message {
+      text-align: center;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 14px;
+      min-height: 32px;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h1>Register</h1>
-    <form id="register-form">
-      <label>Username<br /><input id="username" name="username" required /></label><br />
-      <label>Password<br /><input id="password" type="password" name="password" required /></label><br />
-      <button type="submit">Register</button>
-    </form>
-    <p>Already have an account? <a href="/login">Login</a></p>
-    <div id="message" style="color:red;margin-top:8px;"></div>
+    <div class="card">
+      <h1>Create Account</h1>
+      <form id="register-form" class="form">
+        <label class="label">Username</label>
+        <input id="username" name="username" class="input" placeholder="Choose username" required />
+        <label class="label">Password</label>
+        <input id="password" type="password" name="password" class="input" placeholder="Choose password" required />
+        <button type="submit" class="btn btn-primary">Register</button>
+      </form>
+      <p>Already have an account? <a href="/login">Sign In</a></p>
+      <div id="message" style="color:red;margin-top:8px;"></div>
+    </div>
   </div>
 
   <script>
@@ -26,14 +95,13 @@
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value;
       try {
-        const res = await fetch('/auth/register', {
+        const res = await fetch('/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, password }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.detail || data.error?.message || 'Register failed');
-        // go to login page
         window.location.href = '/login';
       } catch (err) {
         message.textContent = err.message || 'Register failed';

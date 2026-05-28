@@ -89,7 +89,7 @@
         // 加载统计数据
         async function loadStats() {
             try {
-                const res = await fetch('/admin/stats');
+                const res = await fetch('/api/admin/stats');
                 if (!res.ok) throw new Error('Failed to load stats');
                 const data = await res.json();
                 
@@ -105,7 +105,7 @@
         // 加载用户列表
         async function loadUsers() {
             try {
-                const res = await fetch('/admin/users');
+                const res = await fetch('/api/admin/users');
                 if (!res.ok) throw new Error('Failed to load users');
                 const users = await res.json();
                 
@@ -137,7 +137,7 @@
         // 查看用户任务
         async function viewUserTasks(userId) {
             try {
-                const res = await fetch(`/admin/users/${userId}/tasks`);
+                const res = await fetch(`/api/admin/users/${userId}/tasks`);
                 if (!res.ok) throw new Error('Failed to load tasks');
                 const tasks = await res.json();
                 
@@ -158,7 +158,7 @@
             }
             
             try {
-                const res = await fetch(`/admin/users/${userId}`, { method: 'DELETE' });
+                const res = await fetch(`/api/admin/users/${userId}`, { method: 'DELETE' });
                 if (!res.ok) throw new Error('Failed to delete user');
                 
                 toast('用户已删除', 'success');

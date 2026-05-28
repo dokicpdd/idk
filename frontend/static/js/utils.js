@@ -13,16 +13,45 @@ function showStatus(msg) {
   if (el) el.textContent = msg;
 }
 
-// Show toast notification
+// Show toast notification with improved animations
 function toast(message, kind = "error") {
   const el = $("#toast");
   if (!el) return;
+  
+  // Hide first if already showing
+  if (el.style.display === "block") {
+    el.style.opacity = "0";
+    el.style.transform = "translateX(-50%) translateY(100px)";
+    
+    setTimeout(() => {
+      showToast(el, message, kind);
+    }, 300);
+  } else {
+    showToast(el, message, kind);
+  }
+}
+
+function showToast(el, message, kind) {
   el.style.display = "block";
   el.className = `toast ${kind}`;
   el.textContent = message;
+  
+  // Trigger reflow
+  el.offsetHeight;
+  
+  // Animate in
+  el.style.opacity = "1";
+  el.style.transform = "translateX(-50%) translateY(0)";
+  
   window.clearTimeout(toast._t);
   toast._t = window.setTimeout(() => {
-    el.style.display = "none";
+    // Animate out
+    el.style.opacity = "0";
+    el.style.transform = "translateX(-50%) translateY(100px)";
+    
+    setTimeout(() => {
+      el.style.display = "none";
+    }, 400);
   }, 3000);
 }
 

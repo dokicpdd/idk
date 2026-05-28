@@ -21,6 +21,9 @@ class Settings:
     # Security
     SECRET_KEY = os.getenv("SECRET_KEY", "change_this_to_a_secure_random_value")
     SESSION_MAX_AGE = 60 * 60 * 24  # 1 day
+    # JWT settings
+    JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
+    ACCESS_TOKEN_EXPIRE_SECONDS = int(os.getenv("ACCESS_TOKEN_EXPIRE_SECONDS", str(60 * 60)))  # 1 hour
 
     # Application
     DEBUG = os.getenv("DEBUG", "true").lower() == "true"
